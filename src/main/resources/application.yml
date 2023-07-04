@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://0vo.cc:3308/db_warehouse_mysql8?serverTimezone=GMT%2b8
+    username: warehouse
+    password: pwd123456
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 60MB
+  mybatis-plus:
+    mapper-locations: classpath:mapper/*.xml
