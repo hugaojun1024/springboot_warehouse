@@ -8,15 +8,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor())
-                .addPathPatterns("/**")// 拦截所有请求，通过判断token是否合法 决定是否需要登录
-                .excludePathPatterns("/**","/user/register","/system/index",
-                        "/user/rank_list","/user/mail_verify","/user/sign_up","/file/**","/user/**","/problem_content/**");
+        registry.addInterceptor(getJwtInterceptor());
+//                .addPathPatterns("/**")// 拦截所有请求，通过判断token是否合法 决定是否需要登录
+//                .excludePathPatterns("/**","/user/register","/system/index",
+//                        "/user/rank_list","/user/mail_verify","/user/sign_up","/file/**","/user/**","/problem_content/**");
     }
+
     @Bean
-    public JwtInterceptor jwtInterceptor() {
+    public JwtInterceptor getJwtInterceptor() {
         return new JwtInterceptor();
     }
 }

@@ -17,17 +17,11 @@ public class User {
 
     @TableId(type = IdType.INPUT)
     private String userId;
-
     private String username;
-
     private String userPassword;
-
     private Integer role;
-
     private String nickname;
-
     private String avatarUrl;
-
     private Date createTime;
 
 }
