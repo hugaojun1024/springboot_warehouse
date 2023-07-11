@@ -26,9 +26,15 @@ public class WarningService extends ServiceImpl<WarningMapper, Warning> {
             save(warning);
         }
         else{
-            warning.setWarningId(list.get(0).getWarningId());
-            //修改预警值
-            saveOrUpdate(warning);
+            if (warning.getWarningNum() == -1){
+                //删除
+                remove(queryWrapper);
+            }
+            else{
+                warning.setWarningId(list.get(0).getWarningId());
+                //修改预警值
+                saveOrUpdate(warning);
+            }
         }
     }
 
