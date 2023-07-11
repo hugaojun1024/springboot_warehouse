@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://0vo.cc:3308/db_warehouse_mysql8?serverTimezone=GMT%2b8
-    username: warehouse
-    password: pwd123456
+    url: jdbc:mysql://47.113.180.76:3306/db_warehouse_mysql8?serverTimezone=GMT%2b8
+    username: root
+    password: 123456.qwer
     multipart:
       max-file-size: 20MB
       max-request-size: 60MB

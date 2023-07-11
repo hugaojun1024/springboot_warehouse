@@ -16,15 +16,19 @@ import java.util.List;
 public class WarningService extends ServiceImpl<WarningMapper, Warning> {
 
     public void saveWarning(Warning warning) {
-        if (warning.getWarningId() == null || warning.getWarningId().equals("")){
-            //新设置预警值
-            warning.setWarningId(IdWorker.getIdStr());
+        // 查询数据库里是否已经存在预警值
+        warning.setWarningId(IdWorker.getIdStr());
+        QueryWrapper<Warning> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("batch_no",warning.getBatchNo());
+        List<Warning> list = list(queryWrapper);
+        if (list.size() == 0){
             //保存
             save(warning);
         }
         else{
+            warning.setWarningId(list.get(0).getWarningId());
             //修改预警值
-            updateById(warning);
+            saveOrUpdate(warning);
         }
     }
 
