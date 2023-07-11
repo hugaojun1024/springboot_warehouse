@@ -47,18 +47,18 @@ public class RequestDataForwarding {
         HttpEntity<String> entity = new HttpEntity(body, head);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, entity, responseType);
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
-        JSONArray objectData = jsonObject.getJSONArray("objectData");
-
-        JSONArray newData = new JSONArray();
-        for (int i=(pageNum - 1)*pageSize;i<((pageNum - 1)*pageSize + pageSize);i++){
-            JSONObject objectDataItem = objectData.getJSONObject(i);
-            String batchNo = objectDataItem.getString("batchNo");
-            //获取预警值
-            Integer warningNum = warningService.getWarningByBatchNo(batchNo);
-            objectDataItem.put("warningNum",warningNum);
-            newData.add(objectDataItem);
-        }
-        jsonObject.put("objectData",newData);
+//        JSONArray objectData = jsonObject.getJSONArray("objectData");
+//
+//        JSONArray newData = new JSONArray();
+//        for (int i=(pageNum - 1)*pageSize;i<((pageNum - 1)*pageSize + pageSize);i++){
+//            JSONObject objectDataItem = objectData.getJSONObject(i);
+//            String batchNo = objectDataItem.getString("batchNo");
+//            //获取预警值
+//            Integer warningNum = warningService.getWarningByBatchNo(batchNo);
+//            objectDataItem.put("warningNum",warningNum);
+//            newData.add(objectDataItem);
+//        }
+//        jsonObject.put("objectData",newData);
         return jsonObject;
     }
 

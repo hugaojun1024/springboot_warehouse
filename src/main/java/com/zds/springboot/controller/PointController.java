@@ -45,5 +45,4 @@ public class PointController {
         return Result.success("查询成功", message);
     }
 
-
 }

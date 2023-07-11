@@ -40,16 +40,22 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 头部和参数都查看一下是否有token
         String token = request.getHeader("token");
+        System.out.println(token);
+
         if (StringUtils.isEmpty(token)) {
             token = request.getParameter("token");
             if (StringUtils.isEmpty(token)) {
                 response.setStatus(401);
-                System.out.println(1111);
+                System.out.println("Status: 401");
+                System.out.println("token 空的：" + token);
                 throw new RuntimeException("token是空的");
             }
         }
 
         if (!iJwtUtil.verifyToken(token)) {
+            response.setStatus(401);
+            System.out.println("Status: 401 token 无效");
+            System.out.println("token 无效：" + token);
             log.error("token无效");
             return false;
         }

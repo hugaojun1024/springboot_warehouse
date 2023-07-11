@@ -17,5 +17,5 @@ config:
   jwt:
     # 密钥
     secret: abcd1234
-    # token过期时间（5分钟）。单位：秒.
-    expire: 300
+    # token过期时间（24小时）。单位：秒.
+    expire: 86400
