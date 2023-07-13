@@ -29,5 +29,4 @@ public class Message {
     private Main main;
     @TableField(exist = false)
     private List<Detail> detail;
-
 }

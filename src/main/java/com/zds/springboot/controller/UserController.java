@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -34,7 +37,13 @@ public class UserController {
             String userId = u.getUserId();
             String token = iJwtUtil.createToken(userId);
             System.out.println("token" + token);
-            return Result.success("登陆成功", token);
+
+            // 创建一个Map或JSONObject来包含token和用户对象u
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("user", u);
+
+            return Result.success("登陆成功", response);
         }
         return Result.error(Constants.CODE_NULL_USERNAME_OR_PASSWORD,"用户名或密码错误");
     }
