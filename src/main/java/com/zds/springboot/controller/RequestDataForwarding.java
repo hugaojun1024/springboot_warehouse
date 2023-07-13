@@ -29,9 +29,7 @@ public class RequestDataForwarding {
      * @return
      */
     @RequestMapping("/stock_inquiry")
-    public Object stockInquiry(@RequestParam(defaultValue = "") String matName,
-                               Integer pageNum,
-                               Integer pageSize){
+    public Object stockInquiry(@RequestParam(defaultValue = "") String matName){
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://10.1.128.59:7002/ncpmsmm/receiveMessage";
         Class responseType = String.class;
@@ -47,18 +45,6 @@ public class RequestDataForwarding {
         HttpEntity<String> entity = new HttpEntity(body, head);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, entity, responseType);
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
-//        JSONArray objectData = jsonObject.getJSONArray("objectData");
-//
-//        JSONArray newData = new JSONArray();
-//        for (int i=(pageNum - 1)*pageSize;i<((pageNum - 1)*pageSize + pageSize);i++){
-//            JSONObject objectDataItem = objectData.getJSONObject(i);
-//            String batchNo = objectDataItem.getString("batchNo");
-//            //获取预警值
-//            Integer warningNum = warningService.getWarningByBatchNo(batchNo);
-//            objectDataItem.put("warningNum",warningNum);
-//            newData.add(objectDataItem);
-//        }
-//        jsonObject.put("objectData",newData);
         return jsonObject;
     }
 
@@ -68,7 +54,9 @@ public class RequestDataForwarding {
      * @return
      */
     @RequestMapping("/stock_inquiryBySL")
-    public Object stockInquiryBySL(String storageLocation){
+    public Object stockInquiryBySL(String storageLocation,
+                                   Integer pageNum,
+                                   Integer pageSize){
         RestTemplate restTemplate = new RestTemplate();
         String url = "http://10.1.128.59:7002/ncpmsmm/receiveMessage";
         Class responseType = String.class;
@@ -84,6 +72,20 @@ public class RequestDataForwarding {
         HttpEntity<String> entity = new HttpEntity(body, head);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, entity, responseType);
         JSONObject jsonObject = JSONObject.parseObject(responseEntity.getBody());
+        JSONArray objectData = jsonObject.getJSONArray("objectData");
+        int total = objectData.size();
+        JSONArray newData = new JSONArray();
+        for (int i=(pageNum - 1)*pageSize;i<((pageNum - 1)*pageSize + pageSize);i++){
+            JSONObject objectDataItem = objectData.getJSONObject(i);
+            String batchNo = objectDataItem.getString("batchNo");
+            //获取预警值
+            Integer warningNum = warningService.getWarningByBatchNo(batchNo);
+            objectDataItem.put("warningNum",warningNum);
+            newData.add(objectDataItem);
+        }
+        jsonObject.put("objectData",newData);
+        jsonObject.put("total",total);
+
         return jsonObject;
     }
 
