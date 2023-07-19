@@ -24,7 +24,6 @@ import java.util.Date;
 public class Main {
 
     private String MainId;
-
     private String purcOrderId;
     private String contractName;
     private int arrivalNum;
@@ -32,6 +31,4 @@ public class Main {
     private String warehouseNo;
     private String arrivalDate;
     private String recCreator;
-
-
 }

@@ -22,7 +22,13 @@ public class JwtInterceptor implements HandlerInterceptor {
     List<String> whiteList = Arrays.asList(
             "/auth/login",
             "/user/login",
-            "/error"
+            "/error",
+            // 记得删除（开发测试白名单）
+            "/point/getTest",
+            "/point/endpoint",
+            "/point/get_messages",
+            "/point/get_messagesById",
+            "/point/*"
     );
 
     @Override
@@ -48,7 +54,8 @@ public class JwtInterceptor implements HandlerInterceptor {
                 response.setStatus(401);
                 System.out.println("Status: 401");
                 System.out.println("token 空的：" + token);
-                throw new RuntimeException("token是空的");
+//                throw new RuntimeException("token是空的");
+                return false;
             }
         }
 

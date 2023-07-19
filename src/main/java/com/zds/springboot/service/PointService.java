@@ -1,11 +1,9 @@
 package com.zds.springboot.service;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.zds.springboot.mapper.MessageMapper;
 import com.zds.springboot.model.Detail;
 import com.zds.springboot.model.Main;
 import com.zds.springboot.model.Message;
-import com.zds.springboot.utils.IDWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +20,7 @@ public class PointService {
 
     @Autowired
     private MessageService messageService;
+
     public void saveMessage(Message message){
         // 生成id
         message.setMessageId(IdWorker.getIdStr());
@@ -52,5 +51,16 @@ public class PointService {
             msg.setDetail(detailList);
         }
         return list;
+    }
+
+    public Message findById(String messageId, String mainId) {
+        Message message = new Message();
+        Main main  = mainService.findById(mainId);
+        List<Detail> detailList = detailService.findByMessageId(messageId);
+        message.setMain(main);
+        message.setDetail(detailList);
+        message.setMessageId(messageId);
+        message.setMainId(mainId);
+        return message;
     }
 }

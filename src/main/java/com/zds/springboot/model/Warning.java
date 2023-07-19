@@ -16,5 +16,4 @@ public class Warning {
     private String warningId;
     private String batchNo;
     private Integer warningNum;
-
 }
