@@ -1,5 +1,7 @@
 package com.zds.springboot.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.zds.springboot.common.Constants;
 import com.zds.springboot.common.Result;
 import com.zds.springboot.config.websocket.WebSocket;
 import com.zds.springboot.model.Message;
@@ -24,17 +26,43 @@ public class PointController {
     @Autowired
     private PointService pointService;
 
+    //    @RequestMapping("/endpoint")
+//    public Result handlerWebsocket(@RequestBody Message message) {
+//        //下面做数据库保存
+//        pointService.saveMessage(message);
+//        // 使用字符串初始化JSONObject
+//        //JSONObject stringJsonObject = new JSONObject(jsonString);
+//        //System.out.println("JSONObject from String: " + stringJsonObject);
+//        //String stringJsonObject = "有新的订单";
+//        //发送webSocket消息
+//
+//        WebSocket.sendMessage(message);
+//        return Result.success("已成功接收",null);
+//    }
+
     @RequestMapping("/endpoint")
-    public Result handlerWebsocket(@RequestBody Message message) {
+    public Result handlerWebsocket(@RequestBody List<Message> msgs) {
+        List<Message> messages = null;
+        String unescapeString = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(null);
+        try{
+            messages = JSONArray.parseArray(unescapeString, Message.class);
+        } catch (Exception e){
+            e.printStackTrace();
+            return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
+        }
+        if (messages.size() == 0 || messages.get(0).getMain().getPurcOrderId() == null || messages.get(0).getMain().getPurcOrderId().equals("")) {
+            return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
+        }
         //下面做数据库保存
-        pointService.saveMessage(message);
+        for (Message message: messages) {
+            pointService.saveMessage(message);
+        }
         // 使用字符串初始化JSONObject
         //JSONObject stringJsonObject = new JSONObject(jsonString);
         //System.out.println("JSONObject from String: " + stringJsonObject);
         //String stringJsonObject = "有新的订单";
         //发送webSocket消息
-
-        WebSocket.sendMessage(message);
+        WebSocket.sendMessage(msgs);
         return Result.success("已成功接收",null);
     }
 
