@@ -42,19 +42,19 @@ public class PointController {
 
     @RequestMapping("/endpoint")
     public Result handlerWebsocket(@RequestBody List<Message> msgs) {
-        List<Message> messages = null;
-        String unescapeString = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(null);
-        try{
-            messages = JSONArray.parseArray(unescapeString, Message.class);
-        } catch (Exception e){
-            e.printStackTrace();
-            return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
-        }
-        if (messages.size() == 0 || messages.get(0).getMain().getPurcOrderId() == null || messages.get(0).getMain().getPurcOrderId().equals("")) {
+        //List<Message> messages = null;
+        //String unescapeString = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(null);
+//        try{
+//            messages = JSONArray.parseArray(unescapeString, Message.class);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
+//        }
+        if (msgs.size() == 0 || msgs.get(0).getMain().getPurcOrderId() == null || msgs.get(0).getMain().getPurcOrderId().equals("")) {
             return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
         }
         //下面做数据库保存
-        for (Message message: messages) {
+        for (Message message: msgs) {
             pointService.saveMessage(message);
         }
         // 使用字符串初始化JSONObject
