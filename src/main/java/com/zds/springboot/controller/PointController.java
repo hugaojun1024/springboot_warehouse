@@ -6,6 +6,7 @@ import com.zds.springboot.common.Result;
 import com.zds.springboot.config.websocket.WebSocket;
 import com.zds.springboot.model.Message;
 import com.zds.springboot.model.User;
+import com.zds.springboot.model.transfer.Transfer;
 import com.zds.springboot.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,18 @@ public class PointController {
         return Result.success("已成功接收",null);
     }
 
+    @RequestMapping("/save_transfer")
+    public Result saveTransfer(@RequestBody List<Transfer> transfers){
+        if (transfers.size() == 0 || transfers.get(0).getMain().getTransferNo() == null || transfers.get(0).getMain().getTransferNo().equals("")) {
+            return Result.error(Constants.CODE_WRONG_SYSTEM,"发生错误，请检查推送数据格式是否正确！");
+        }
+        //下面做数据库保存
+        for (Transfer transfer: transfers) {
+            pointService.saveTransfer(transfer);
+        }
+        return Result.success("已成功接收-物资调拨信息",null);
+    }
+
     @RequestMapping("/getTest")
     public Result getTest(@RequestBody User user) {
         WebSocket.sendMessage(user);
@@ -76,6 +89,12 @@ public class PointController {
     public Result getMessages(){
         List<Message> message = pointService.findAll();
         return Result.success("查询成功", message);
+    }
+
+    @RequestMapping("/get_transfer")
+    public Result getTransfer(){
+        List<Transfer> allTransfer = pointService.findAllTransfer();
+        return Result.success("查询成功",allTransfer);
     }
 
     @RequestMapping("/get_messagesById")
