@@ -1,6 +1,5 @@
 package com.zds.springboot.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.zds.springboot.common.Constants;
 import com.zds.springboot.common.Result;
 import com.zds.springboot.config.websocket.WebSocket;
@@ -9,7 +8,10 @@ import com.zds.springboot.model.User;
 import com.zds.springboot.model.transfer.Transfer;
 import com.zds.springboot.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -101,5 +103,11 @@ public class PointController {
     public Result getMessagesById(@RequestParam("messageId") String messageId, @RequestParam("mainId") String mainId) {
         Message message = pointService.findById(messageId, mainId);
         return Result.success("查询成功", message);
+    }
+
+    @RequestMapping("/get_transferById")
+    public Result getTransferById(@RequestParam("transferId") String transferId, @RequestParam("mainId") String mainId) {
+        Transfer transfer = pointService.findTransferById(transferId, mainId);
+        return Result.success("查询成功", transfer);
     }
 }

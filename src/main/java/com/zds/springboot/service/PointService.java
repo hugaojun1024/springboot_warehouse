@@ -98,6 +98,7 @@ public class PointService {
             List<com.zds.springboot.model.transfer.Detail> detailList = transferDetailService.findByTransferId(trans.getTransferId());
             trans.setMain(main);
             trans.setDetail(detailList);
+            System.out.println(trans.toString());
         }
         return list;
     }
@@ -111,5 +112,16 @@ public class PointService {
         message.setMessageId(messageId);
         message.setMainId(mainId);
         return message;
+    }
+
+    public Transfer findTransferById(String transferId, String mainId) {
+        Transfer transfer = new Transfer();
+        com.zds.springboot.model.transfer.Main main = transferMainService.findById(mainId);
+        List<com.zds.springboot.model.transfer.Detail> detail = transferDetailService.findByTransferId(transferId);
+        transfer.setTransferId(transferId);
+        transfer.setMainId(mainId);
+        transfer.setMain(main);
+        transfer.setDetail(detail);
+        return transfer;
     }
 }
